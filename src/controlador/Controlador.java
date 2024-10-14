@@ -35,4 +35,14 @@ public class Controlador {
 		return miModelo.recogerRegistros();
 	}
 
+	public int eliminarRegistro(String id) {
+		return miModelo.eliminarRegistro(id);
+	}
+
+	public boolean editarRegistro(String id, String nuevoNombre, String nuevoApellido) {
+		
+		return miModelo.editarRegistro(id, nuevoNombre, nuevoApellido);
+		
+	}
+
 }

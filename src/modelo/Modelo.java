@@ -91,4 +91,39 @@ public class Modelo {
 
 	}
 
+	public int eliminarRegistro(String id) {
+
+		String consulta = "DELETE FROM usuarios WHERE id = " + id;
+
+		try {
+			Statement statement = miConexion.createStatement();
+			int resultado = statement.executeUpdate(consulta);
+			return resultado;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+
+	}
+
+	public boolean editarRegistro(String idUsuario, String nuevoNombre, String nuevoApellido) {
+
+		String consulta = "UPDATE usuarios SET nombre = ?, apellido = ? WHERE id = " + idUsuario;
+		
+		PreparedStatement ps;
+		try {
+			ps = miConexion.prepareStatement(consulta);
+			ps.setString(1, nuevoNombre);
+			ps.setString(2, nuevoApellido);
+			ps.executeUpdate();
+			ps.close();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+
+	}
+
 }
