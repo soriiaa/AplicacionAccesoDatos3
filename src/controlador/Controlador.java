@@ -27,4 +27,12 @@ public class Controlador {
 		((JFrame) misVistas[hasta]).setVisible(true);
 	}
 
+	public boolean anadirUsuario(String nombre, String apellido) {
+		return miModelo.anadirUsuario(nombre, apellido);
+	}
+	
+	public String[][] recogerRegistros() {
+		return miModelo.recogerRegistros();
+	}
+
 }

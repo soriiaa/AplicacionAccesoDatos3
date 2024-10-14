@@ -69,6 +69,11 @@ public class _00_InicioAplicacion extends JFrame implements Vista {
 		getContentPane().add(btnAgregarRegistro);
 
 		btnVisualizarDatos = new JButton("Visualizar Datos");
+		btnVisualizarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				miControlador.cambiarVentana(0, 2);
+			}
+		});
 		btnVisualizarDatos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {

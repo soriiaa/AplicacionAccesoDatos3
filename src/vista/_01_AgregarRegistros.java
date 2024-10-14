@@ -1,9 +1,11 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import controlador.Controlador;
@@ -13,6 +15,10 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class _01_AgregarRegistros extends JFrame implements Vista {
 
@@ -25,6 +31,8 @@ public class _01_AgregarRegistros extends JFrame implements Vista {
 	private JLabel lblInstrucciones;
 	private JLabel lblNombre;
 	private JButton btnAnadir;
+	private JLabel lblResultadoInsert;
+	private JLabel lblVolver;
 
 	@Override
 	public void setModelo(Modelo miModelo) {
@@ -52,6 +60,20 @@ public class _01_AgregarRegistros extends JFrame implements Vista {
 		getContentPane().add(lblTitulo);
 		
 		txtNombreUsuario = new JTextField();
+		txtNombreUsuario.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				activarBoton();
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				activarBoton();
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				activarBoton();
+			}
+		});
 		txtNombreUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtNombreUsuario.setBounds(273, 223, 339, 30);
 		txtNombreUsuario.setBorder(BorderFactory.createCompoundBorder(txtNombreUsuario.getBorder(),
@@ -60,6 +82,20 @@ public class _01_AgregarRegistros extends JFrame implements Vista {
 		txtNombreUsuario.setColumns(10);
 		
 		txtApellidoUsuario = new JTextField();
+		txtApellidoUsuario.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				activarBoton();
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				activarBoton();
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				activarBoton();
+			}
+		});
 		txtApellidoUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtApellidoUsuario.setBounds(273, 316, 339, 30);
 		txtApellidoUsuario.setBorder(BorderFactory.createCompoundBorder(txtApellidoUsuario.getBorder(),
@@ -82,11 +118,33 @@ public class _01_AgregarRegistros extends JFrame implements Vista {
 		lblInstrucciones.setBounds(273, 142, 339, 25);
 		getContentPane().add(lblInstrucciones);
 		
+		lblResultadoInsert = new JLabel("Usuario añadido con éxito");
+		lblResultadoInsert.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblResultadoInsert.setBounds(356, 389, 173, 13);
+		lblResultadoInsert.setVisible(false);
+		getContentPane().add(lblResultadoInsert);
+		setVisible(false);
+		
 		btnAnadir = new JButton("Añadir Usuario");
+		btnAnadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean respuesta = miControlador.anadirUsuario(txtNombreUsuario.getText(), txtApellidoUsuario.getText());
+				if (respuesta) {
+					limpiarCampos();
+					lblResultadoInsert.setText("Usuario añadido con éxito");
+					lblResultadoInsert.setVisible(true);
+					btnAnadir.setEnabled(false);
+				} else {
+					lblResultadoInsert.setText("         Error");
+					lblResultadoInsert.setVisible(true);
+				}
+			}
+		});
 		btnAnadir.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if (btnAnadir.isEnabled()) {
+					btnAnadir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 					btnAnadir.setBackground(new Color(70, 70, 70));
 				}
 			}
@@ -95,9 +153,9 @@ public class _01_AgregarRegistros extends JFrame implements Vista {
 		btnAnadir.setForeground(new Color(255, 255, 255));
 		btnAnadir.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnAnadir.setBounds(368, 430, 149, 37);
+		btnAnadir.setEnabled(false);
 		btnAnadir.setBorder(null);
 		getContentPane().add(btnAnadir);
-		setVisible(false);
 		
 		getContentPane().addMouseListener(new MouseAdapter() {
 			@Override
@@ -106,5 +164,38 @@ public class _01_AgregarRegistros extends JFrame implements Vista {
 			}
 		});
 		
+		lblVolver = new JLabel("");
+		lblVolver.setIcon(new ImageIcon(".\\adjuntos\\flechaAtras.png"));
+		lblVolver.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				limpiarCampos();
+				btnAnadir.setEnabled(false);
+				miControlador.cambiarVentana(1, 0);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblVolver.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+		});
+		lblVolver.setBounds(817, 11, 61, 44);
+		getContentPane().add(lblVolver);
+		
+	}
+	
+	public void activarBoton() {
+		
+		if (txtNombreUsuario.getText().equals("") || txtApellidoUsuario.getText().equals("")) {
+			btnAnadir.setEnabled(false);
+		} else {
+			btnAnadir.setEnabled(true);
+		}
+		
+	}
+	
+	public void limpiarCampos() {
+		txtNombreUsuario.setText("");
+		txtApellidoUsuario.setText("");
 	}
 }
